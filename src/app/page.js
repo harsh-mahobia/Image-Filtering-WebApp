@@ -1,103 +1,118 @@
-import Image from "next/image";
+// app/page.jsx (no TypeScript, no UI library)
+"use client";
+
+import { useRef, useState, useEffect } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const canvasRef = useRef(null);
+  const imageRef = useRef(null);
+  const [imageURL, setImageURL] = useState(null);
+  const [filterType, setFilterType] = useState("none");
+  const [intensity, setIntensity] = useState(100);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageURL(reader.result);
+        setFilterType("none");
+        setIntensity(100);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const applyFilter = (type = filterType, value = intensity) => {
+    setFilterType(type);
+    setIntensity(value);
+
+    const canvas = canvasRef.current;
+    const image = imageRef.current;
+    if (canvas && image) {
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      const displayWidth = 400;
+      const scale = displayWidth / image.width;
+      const displayHeight = image.height * scale;
+
+      canvas.width = displayWidth;
+      canvas.height = displayHeight;
+
+      let filter = "none";
+      if (type === "grayscale") filter = `grayscale(${value}%)`;
+      else if (type === "brightness") filter = `brightness(${value}%)`;
+      else if (type === "blur") filter = `blur(${(value / 100) * 10}px)`;
+
+      ctx.filter = filter;
+      ctx.drawImage(image, 0, 0, displayWidth, displayHeight);
+    }
+  };
+
+  const downloadImage = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const link = document.createElement("a");
+      link.download = "filtered-image.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  };
+
+  useEffect(() => {
+    if (imageURL) applyFilter();
+  }, [intensity]);
+
+  const buttonClass =
+    "px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition";
+
+  return (
+    <main className="flex flex-col items-center justify-center gap-4 p-4">
+      <h1 className="text-2xl font-bold">Image Filter App</h1>
+
+      <input type="file" accept="image/*" onChange={handleImageUpload} />
+
+      {imageURL && (
+        <>
+          <img
+            ref={imageRef}
+            src={imageURL}
+            alt="uploaded"
+            onLoad={() => applyFilter()}
+            style={{ display: "none" }}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+          <canvas ref={canvasRef} className="border rounded shadow w-full max-w-[250px] h-auto" />
+
+          <div className="flex flex-wrap gap-2 mt-2">
+            <button className={buttonClass} onClick={() => applyFilter("none", 100)}>Original</button>
+            <button className={buttonClass} onClick={() => applyFilter("grayscale", intensity)}>Grayscale</button>
+            <button className={buttonClass} onClick={() => applyFilter("brightness", intensity)}>Bright</button>
+            <button className={buttonClass} onClick={() => applyFilter("blur", intensity)}>Blur</button>
+          </div>
+
+          {(filterType !== "none") && (
+            <div className="w-full max-w-[400px] mt-4">
+              <label className="block text-sm font-medium mb-1 text-center">
+                Adjust Intensity ({intensity}{filterType === 'blur' ? 'px' : '%'})
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="200"
+                value={intensity}
+                onChange={(e) => applyFilter(filterType, parseInt(e.target.value))}
+                className="w-full"
+              />
+            </div>
+          )}
+
+          <button className={`${buttonClass} mt-4`} onClick={downloadImage}>
+            Download Image
+          </button>
+        </>
+      )}
+    </main>
   );
 }
