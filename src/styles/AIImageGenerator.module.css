@@ -1,86 +1,114 @@
+/* ========== AI Generator Container ========== */
 .aiGeneratorContainer {
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .description {
-    margin-bottom: 15px;
-    color: #555;
-  }
-  
+  background-color: #2f2f2f;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  color: #f1f1f1;
+}
+
+/* ========== Description & Error ========== */
+.description {
+  margin-bottom: 16px;
+  color: #d1d5db;
+  font-size: 15px;
+}
+
+.errorMessage {
+  color: #ef4444;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+/* ========== Prompt Form ========== */
+.promptForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 600px) {
   .promptForm {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+    flex-direction: row;
   }
-  
-  .promptInput {
-    flex: 1;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-  
-  .generateButton {
-    padding: 10px 20px;
-    background-color: #6d28d9;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s;
-  }
-  
-  .generateButton:hover:not(:disabled) {
-    background-color: #5b21b6;
-  }
-  
-  .generateButton:disabled {
-    background-color: #9ca3af;
-    cursor: not-allowed;
-  }
-  
-  .errorMessage {
-    color: #ef4444;
-    margin-bottom: 15px;
-  }
-  
-  .suggestionsContainer {
-    margin-top: 20px;
-  }
-  
-  .suggestionsContainer h4 {
-    margin-bottom: 10px;
-    color: #4b5563;
-  }
-  
-  .suggestionTags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  
-  .suggestionTag {
-    padding: 6px 12px;
-    background-color: #e5e7eb;
-    border: none;
-    border-radius: 20px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .suggestionTag:hover:not(:disabled) {
-    background-color: #d1d5db;
-  }
-  
-  .suggestionTag:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-  
+}
+
+.promptInput {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background-color: #3d3d3d;
+  color: #f3f4f6;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.promptInput:focus {
+  border-color: #8b5cf6;
+}
+
+/* ========== Generate Button ========== */
+.generateButton {
+  padding: 12px 20px;
+  background-color: #8b5cf6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.generateButton:hover:not(:disabled) {
+  background-color: #7c3aed;
+  transform: translateY(-1px);
+}
+
+.generateButton:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* ========== Suggestions Section ========== */
+.suggestionsContainer {
+  margin-top: 24px;
+}
+
+.suggestionsContainer h4 {
+  margin-bottom: 12px;
+  color: #e5e7eb;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.suggestionTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.suggestionTag {
+  padding: 6px 14px;
+  background-color: #d1d5db;
+  color: #1f2937;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.suggestionTag:hover:not(:disabled) {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+.suggestionTag:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
