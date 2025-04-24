@@ -1,0 +1,86 @@
+.aiGeneratorContainer {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .description {
+    margin-bottom: 15px;
+    color: #555;
+  }
+  
+  .promptForm {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .promptInput {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .generateButton {
+    padding: 10px 20px;
+    background-color: #6d28d9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  
+  .generateButton:hover:not(:disabled) {
+    background-color: #5b21b6;
+  }
+  
+  .generateButton:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+  }
+  
+  .errorMessage {
+    color: #ef4444;
+    margin-bottom: 15px;
+  }
+  
+  .suggestionsContainer {
+    margin-top: 20px;
+  }
+  
+  .suggestionsContainer h4 {
+    margin-bottom: 10px;
+    color: #4b5563;
+  }
+  
+  .suggestionTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .suggestionTag {
+    padding: 6px 12px;
+    background-color: #e5e7eb;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .suggestionTag:hover:not(:disabled) {
+    background-color: #d1d5db;
+  }
+  
+  .suggestionTag:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
